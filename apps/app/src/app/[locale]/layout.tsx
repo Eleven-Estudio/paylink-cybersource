@@ -7,8 +7,10 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
-  title: "Create v1",
-  description: "Production ready Next.js app",
+  title: {
+    template: "%s | Eleven Payment",
+    default: "Eleven Payment",
+  },
 };
 
 export const viewport = {
@@ -33,7 +35,7 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

@@ -1,6 +1,6 @@
 import { Check, Copy, Loader2, LogOut } from "lucide-react";
 
-export const Icons = {
+export const Lucide = {
   SignOut: LogOut,
   Copy,
   Check,

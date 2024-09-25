@@ -1,7 +1,11 @@
 {
   "name": "v1",
   "private": true,
-  "workspaces": ["packages/*", "apps/*", "tooling/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "tooling/*"
+  ],
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
@@ -9,6 +13,7 @@
     "dev": "turbo dev --parallel",
     "dev:web": "turbo dev --filter=@v1/web",
     "dev:jobs": "turbo jobs --filter=@v1/jobs",
+    "ui:add": "bun --filter ui ui:add",
     "dev:app": "turbo dev --filter=@v1/app",
     "start:web": "turbo start --filter=@v1/web",
     "start:app": "turbo start --filter=@v1/app",
