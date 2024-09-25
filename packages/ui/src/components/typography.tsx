@@ -1,4 +1,5 @@
-import { cn } from "@v1/ui/cn";
+// import { cn } from "@/lib/utils"; // TODO: fix this
+import { cn } from "../lib/utils";
 
 interface TypographyTitleProps
   extends React.HTMLAttributes<HTMLHeadingElement> {
