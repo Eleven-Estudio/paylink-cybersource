@@ -1,6 +1,6 @@
 export default {
   login: {
     title: "Eleven Payment",
-    btnSignIn: "Sign in with Google",
+    btnSignIn: "Iniciar sesión con Google",
   },
 } as const;
