@@ -6,5 +6,5 @@ export const BUSINESS = {
     width: 701,
     height: 701,
   },
-  domain: "elevenestudio.com",
+  domain: "pay.elevenestudio.com",
 };

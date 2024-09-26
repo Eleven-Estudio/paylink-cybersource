@@ -8,8 +8,8 @@ import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - Eleven Payment",
-    default: "Eleven Payment",
+    template: "%s - Eleven Checkout",
+    default: "Eleven Checkout",
   },
 };
 
