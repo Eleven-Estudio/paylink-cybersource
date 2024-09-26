@@ -5,6 +5,11 @@ import { getRandomKey } from "@/lib/key";
 import { createLink } from "@v1/supabase/mutations";
 import { createLinkSchema } from "./schema";
 
+const CURRENCY = {
+  USD: "USD",
+  GTQ: "GTQ",
+} as const;
+
 export const createLinkAction = authActionClient
   .schema(createLinkSchema)
   .metadata({
@@ -14,7 +19,7 @@ export const createLinkAction = authActionClient
     const randomKey = await getRandomKey({ prefix: "ee" });
     const linkPayment = {
       ...input,
-      currency: "USD",
+      currency: CURRENCY.USD,
       key: randomKey,
     };
 
