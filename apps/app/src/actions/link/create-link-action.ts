@@ -11,7 +11,7 @@ export const createLinkAction = authActionClient
     name: "create-link",
   })
   .action(async ({ parsedInput: input, ctx: { user } }) => {
-    const randomKey = await getRandomKey({ long: true, prefix: "ee" });
+    const randomKey = await getRandomKey({ prefix: "ee" });
     const linkPayment = {
       ...input,
       currency: "USD",

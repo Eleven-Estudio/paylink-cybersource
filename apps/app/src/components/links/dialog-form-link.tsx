@@ -2,7 +2,6 @@
 
 import { createLinkAction } from "@/actions/link/create-link-action";
 import { createLinkSchema } from "@/actions/link/schema";
-import { useScopedI18n } from "@/locales/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@v1/ui/button";
 import {
@@ -21,6 +20,7 @@ import {
   FormMessage,
 } from "@v1/ui/form";
 import { Input } from "@v1/ui/input";
+import { Lucide } from "@v1/ui/lucide";
 import { Textarea } from "@v1/ui/textarea";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,7 @@ export const TypeAction = {
 } as const;
 
 const DialogFormLink = ({ action }: { action: Action }) => {
+  const [status, setStatus] = useState<"loading" | "idle">("idle");
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof createLinkSchema>>({
@@ -47,6 +48,7 @@ const DialogFormLink = ({ action }: { action: Action }) => {
   });
 
   async function onSubmit(values: z.infer<typeof createLinkSchema>) {
+    setStatus("loading");
     const result = await createLinkAction(values);
 
     if (
@@ -60,6 +62,7 @@ const DialogFormLink = ({ action }: { action: Action }) => {
     if (result?.data?.status && result?.data?.status >= 400) {
       toast.error("Error creating link");
     }
+    setStatus("idle");
   }
 
   useEffect(() => {
@@ -134,7 +137,16 @@ const DialogFormLink = ({ action }: { action: Action }) => {
             />
 
             <Button className="w-full" type="submit">
-              {action === TypeAction.create ? "Create Link" : "Edit Link"}
+              {status === "loading" ? (
+                <>
+                  <Lucide.Loader className="animate-spin mr-2 h-4 w-4" />
+                  Creating...
+                </>
+              ) : action === TypeAction.create ? (
+                "Create Link"
+              ) : (
+                "Edit Link"
+              )}
             </Button>
           </form>
         </Form>
