@@ -20,12 +20,9 @@ const NavLink = ({
   ...rest
 }: NavLinkProps) => {
   const pathname = usePathname(); // pathname
-  console.log(pathname);
   const isActive =
     pathname.endsWith(href) || (href.includes(pathname) && pathname !== "/");
   const newClassName = isActive ? activeClassName : nonActiveClassName;
-
-  console.log(isActive);
 
   return (
     <Link

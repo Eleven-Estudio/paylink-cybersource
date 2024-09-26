@@ -1,14 +1,22 @@
-import { SignOut } from "@/components/sign-out";
+import DialogFormLink from "@/components/dialog-form-link";
 import { getI18n } from "@/locales/server";
-import { getUser } from "@v1/supabase/queries";
+import { TypographyH2 } from "@v1/ui/typography";
 
 export const metadata = {
-  title: "Home",
+  title: "Links",
 };
 
 export default async function Page() {
-  const { data } = await getUser();
   const t = await getI18n();
 
-  return <h1>Hola</h1>;
+  return (
+    <div>
+      <div className="flex gap-4 justify-between">
+        <TypographyH2>{t("links.title")}</TypographyH2>
+        <div className="flex flex-wrap gap-2">
+          <DialogFormLink action="create" />
+        </div>
+      </div>
+    </div>
+  );
 }

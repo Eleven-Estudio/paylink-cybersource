@@ -11,4 +11,9 @@ export default {
     logout: "Cerrar sesión",
     toggleUserMenu: "Alternar menú de usuario",
   },
+  links: {
+    title: "Enlaces",
+    newLink: "Nuevo enlace",
+    editLink: "Editar enlace",
+  },
 } as const;
