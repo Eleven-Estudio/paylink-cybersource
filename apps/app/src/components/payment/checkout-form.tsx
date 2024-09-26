@@ -29,6 +29,7 @@ import {
   unformatCreditCard,
   unformatGeneral,
 } from "cleave-zen";
+import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -36,10 +37,10 @@ import Logo from "../commons/logo";
 import CardIcons from "./card-icons";
 
 const CheckoutForm = () => {
+  const params = useParams();
   const [status, setStatus] = useState<"loading" | "idle">("idle");
   const [ccNumber, setCcNumber] = useState("");
   const [ccExpiration, setCcExpiration] = useState("");
-  const [ccCvv, setCcCvv] = useState("");
   const [type, setType] = useState<CreditCardType | null>(null);
   const [maxLenghtCvv, setMaxLenghtCvv] = useState(4);
 
@@ -56,7 +57,6 @@ const CheckoutForm = () => {
 
   const ccNumberRef = useRef<HTMLInputElement | null>(null);
   const ccExpirationRef = useRef<HTMLInputElement | null>(null);
-  const ccCvvRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     // registerCursorTracker itself returns an unregister destructor
@@ -78,7 +78,10 @@ const CheckoutForm = () => {
 
   async function onSubmit(values: z.infer<typeof checkoutSchema>) {
     setStatus("loading");
-    const result = await capturePaymentAction(values);
+    const result = await capturePaymentAction({
+      ...values,
+      link: (params?.link ?? "") as string,
+    });
     setStatus("idle");
   }
 

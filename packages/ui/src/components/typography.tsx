@@ -6,6 +6,19 @@ interface TypographyTitleProps
   children: React.ReactNode;
 }
 
+function TypographyH1({ children, className }: TypographyTitleProps) {
+  return (
+    <h1
+      className={cn(
+        "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+        className,
+      )}
+    >
+      {children}
+    </h1>
+  );
+}
+
 function TypographyH3({ children, className }: TypographyTitleProps) {
   return (
     <h3
@@ -45,4 +58,4 @@ function TypographyH4({ children, className }: TypographyTitleProps) {
   );
 }
 
-export { TypographyH3, TypographyH2, TypographyH4 };
+export { TypographyH1, TypographyH3, TypographyH2, TypographyH4 };

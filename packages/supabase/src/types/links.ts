@@ -3,7 +3,7 @@ export interface Link {
   title: string;
   description: string;
   amount: number;
-  currency: string;
+  currency: "USD" | "GTQ";
   key: string;
   views: number;
   active: boolean;
@@ -26,6 +26,14 @@ export interface LinkInsert
   description?: string;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface LinkPublicData extends Partial<Link> {
+  id: string;
+  title: string;
+  description: string;
+  amount: number;
+  currency: "USD" | "GTQ";
 }
 
 export interface LinkUpdate

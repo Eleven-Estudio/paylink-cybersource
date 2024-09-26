@@ -14,4 +14,5 @@ export const checkoutSchema = z.object({
     .min(3, { message: "CVV is required" })
     .max(3, { message: "CVV is required" }),
   "cc-name": z.string().min(1, { message: "Cardholder name is required" }),
+  link: z.string().optional(),
 });
