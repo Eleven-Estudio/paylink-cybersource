@@ -15,7 +15,12 @@ export function linkConstructor({
     return "";
   }
 
-  let url = `https://${punycode(domain)}${key && key !== "_root" ? `/${punycode(key)}` : ""}`;
+  let url = "";
+  if (process.env.NODE_ENV === "development") {
+    url = `http://localhost:3000${key && key !== "_root" ? `/${key}` : ""}`;
+  } else {
+    url = `https://${punycode(domain)}${key && key !== "_root" ? `/${punycode(key)}` : ""}`;
+  }
 
   if (searchParams) {
     const search = new URLSearchParams();

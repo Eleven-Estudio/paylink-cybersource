@@ -19,7 +19,7 @@ function TypographyH3({ children, className }: TypographyTitleProps) {
   );
 }
 
-export function TypographyH2({ children, className }: TypographyTitleProps) {
+function TypographyH2({ children, className }: TypographyTitleProps) {
   return (
     <h2
       className={cn(
@@ -32,4 +32,17 @@ export function TypographyH2({ children, className }: TypographyTitleProps) {
   );
 }
 
-export { TypographyH3 };
+function TypographyH4({ children, className }: TypographyTitleProps) {
+  return (
+    <h4
+      className={cn(
+        "scroll-m-20 text-xl font-semibold tracking-tight",
+        className,
+      )}
+    >
+      {children}
+    </h4>
+  );
+}
+
+export { TypographyH3, TypographyH2, TypographyH4 };

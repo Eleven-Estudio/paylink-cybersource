@@ -1,0 +1,92 @@
+.checkout-container::before {
+  content: "";
+  display: none;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 15px 0 30px 0 rgba(0, 0, 0, 0.18);
+  z-index: 1;
+  position: fixed;
+  transform-origin: right;
+}
+
+@media (min-width: 990px) {
+  .checkout-container::before {
+    display: block;
+  }
+}
+
+@keyframes add-shadow {
+  to {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .checkout-header {
+    animation: add-shadow linear both;
+    animation-range: 0 30px;
+    animation-timeline: scroll();
+  }
+
+  @media (min-width: 990px) {
+    .checkout-header {
+      animation: none;
+    }
+  }
+}
+
+/* IF not supported */
+@supports not (animation-timeline: scroll()) {
+  .checkout-header {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+  }
+}
+
+.card-ext-container {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.card-ext-container img {
+  grid-column: 1;
+  grid-row: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+@keyframes cycleImages {
+
+  0%,
+  30% {
+    opacity: 1;
+  }
+
+  33%,
+  97% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.card-ext-img {
+  opacity: 0;
+}
+
+.card-ext-img-1 {
+  opacity: 1;
+  animation: cycleImages 9s infinite;
+}
+
+.card-ext-img-2 {
+  animation: cycleImages 9s infinite -3s;
+}
+
+.card-ext-img-3 {
+  animation: cycleImages 9s infinite -6s;
+}
