@@ -1,3 +1,5 @@
+import type { Link, LinkInsert, LinkUpdate } from "./links";
+
 export type Json =
   | string
   | number
@@ -9,40 +11,19 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      posts: {
-        Row: {
-          content: string;
-          created_at: string;
-          id: string;
-          title: string;
-          updated_at: string;
-          user_id: string;
-        };
-        Insert: {
-          content: string;
-          created_at?: string;
-          id?: string;
-          title: string;
-          updated_at?: string;
-          user_id: string;
-        };
-        Update: {
-          content?: string;
-          created_at?: string;
-          id?: string;
-          title?: string;
-          updated_at?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "fk_posts_user";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
+      links: {
+        Row: Link;
+        Insert: LinkInsert;
+        Update: LinkUpdate;
+        // Relationships: [
+        //   {
+        //     foreignKeyName: "fk_posts_user";
+        //     columns: ["user_id"];
+        //     isOneToOne: false;
+        //     referencedRelation: "users";
+        //     referencedColumns: ["id"];
+        //   },
+        // ];
       };
       users: {
         Row: {
@@ -87,7 +68,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      status: "pending" | "paid" | "failed" | "canceled" | "refunded";
     };
     CompositeTypes: {
       [_ in never]: never;
