@@ -11,7 +11,7 @@ export default async function Page() {
 
   return (
     <div>
-      <div className="flex gap-4 justify-between">
+      <div className="flex gap-4 justify-between items-center">
         <TypographyH2>{t("links.title")}</TypographyH2>
         <div className="flex flex-wrap gap-2">
           <DialogFormLink action="create" />

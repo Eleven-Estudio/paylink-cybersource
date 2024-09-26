@@ -2,6 +2,7 @@ import NavDesktop from "@/components/nav/nav-desktop";
 import NavHeader from "@/components/nav/nav-header";
 import { I18nProviderClient } from "@/locales/client";
 import type { ReactElement } from "react";
+import { Toaster } from "sonner";
 
 interface LayoutProps {
   params: { locale: string };
@@ -11,6 +12,7 @@ interface LayoutProps {
 export default async function Layout({ params, children }: LayoutProps) {
   return (
     <I18nProviderClient locale={params.locale}>
+      <Toaster richColors />
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <NavDesktop />
         <div className="flex flex-col">

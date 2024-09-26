@@ -12,12 +12,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@v1/analytics": "workspace:*",
     "@v1/kv": "workspace:*",
     "@v1/supabase": "workspace:*",
     "@v1/ui": "workspace:*",
     "dub": "^0.36.5",
     "geist": "^1.3.1",
+    "nanoid": "^5.0.7",
     "next": "14.2.7",
     "next-international": "^1.2.4",
     "next-safe-action": "^7.9.0",
@@ -25,6 +27,8 @@
     "nuqs": "^1.18.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "sonner": "^1.5.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

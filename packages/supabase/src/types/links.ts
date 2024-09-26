@@ -13,7 +13,17 @@ export interface Link {
 }
 
 export interface LinkInsert
-  extends Omit<Link, "id" | "created_at" | "updated_at"> {
+  extends Omit<
+    Link,
+    | "id"
+    | "created_at"
+    | "updated_at"
+    | "state"
+    | "active"
+    | "views"
+    | "description"
+  > {
+  description?: string;
   created_at?: string;
   updated_at?: string;
 }

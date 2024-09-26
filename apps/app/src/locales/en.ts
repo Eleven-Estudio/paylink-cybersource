@@ -15,5 +15,12 @@ export default {
     title: "Links",
     newLink: "New link",
     editLink: "Edit link",
+    form: {
+      title: "Title",
+      description: "Description",
+      amount: "Amount",
+      submit: "Create",
+      cancel: "Cancel",
+    },
   },
 } as const;
