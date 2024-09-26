@@ -41,6 +41,7 @@
     "@sentry/nextjs": "^8",
     "@supabase/sentry-js-integration": "^0.2.0",
     "@types/node": "^22",
+    "@types/punycode": "^2.1.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5.5.4"
