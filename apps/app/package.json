@@ -22,6 +22,7 @@
     "cleave-zen": "^0.0.17",
     "date-fns": "^4.1.0",
     "dub": "^0.36.5",
+    "framer-motion": "^11.7.0",
     "geist": "^1.3.1",
     "nanoid": "^5.0.7",
     "next": "14.2.7",

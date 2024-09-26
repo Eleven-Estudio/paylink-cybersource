@@ -1,18 +1,13 @@
 import { z } from "zod";
 
 export const checkoutSchema = z.object({
-  email: z.string().email({ message: "Email is required" }),
-  "cc-number": z
-    .string()
-    .min(16, { message: "Credit card number is incomplete" })
-    .max(16, { message: "Credit card number is invalid" }),
-  "cc-expiration": z
-    .string()
-    .min(1, { message: "Expiration date is required" }),
+  email: z.string().email({ message: "Required" }),
+  "cc-number": z.string().min(16, { message: "Required" }),
+  "cc-expiration": z.string().min(1, { message: "Required" }),
   "cc-cvv": z
     .string()
-    .min(3, { message: "CVV is required" })
-    .max(3, { message: "CVV is required" }),
-  "cc-name": z.string().min(1, { message: "Cardholder name is required" }),
+    .min(5, { message: "Required" })
+    .max(5, { message: "Required" }),
+  "cc-name": z.string().min(1, { message: "Required" }),
   link: z.string().optional(),
 });

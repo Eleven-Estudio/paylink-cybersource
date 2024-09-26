@@ -4,6 +4,7 @@ import { linkConstructor } from "@/lib/link-constructor";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Link } from "@v1/supabase/links";
 import { CopyButton } from "@v1/ui/copy-button";
+import { Lucide } from "@v1/ui/lucide";
 import { format } from "date-fns";
 import BadgeActive from "./badge-active";
 
@@ -41,6 +42,22 @@ export const ColumnsLinks: ColumnDef<Link>[] = [
       const createdAt = new Date(row.original.created_at);
 
       return <div>{format(createdAt, "dd MMM HH:mm")}</div>;
+    },
+  },
+  {
+    accessorKey: "views",
+    header: "Views",
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-2 rounded-full bg-neutral-100 px-2 py-1 w-fit">
+          {row.original.views > 0 ? (
+            <Lucide.Eye className="w-3 h-3" />
+          ) : (
+            <Lucide.EyeOff className="w-3 h-3" />
+          )}
+          <span className="text-sm font-medium">{row.original.views}</span>
+        </div>
+      );
     },
   },
   {

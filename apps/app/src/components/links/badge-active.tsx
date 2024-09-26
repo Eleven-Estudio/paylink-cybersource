@@ -6,10 +6,12 @@ function BadgeActive({ active }: { active: boolean }) {
   return (
     <div
       className={cn([
-        "py-1 px-2 rounded-lg font-semibold text-xs",
+        "py-[3px] px-[6px] rounded-lg font-semibold text-xs",
         {
-          "bg-green-200 text-green-800 border-green-100 shadow-none": active,
-          "bg-red-200 text-red-800 border-red-100 shadow-none": !active,
+          "bg-[#D1FAB3] text-[#217007] border border-[#A8F171] shadow-none":
+            active,
+          "bg-red-200/60 text-red-800 border border-red-300 shadow-none":
+            !active,
         },
       ])}
     >

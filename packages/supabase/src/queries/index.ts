@@ -21,7 +21,10 @@ export async function getLinks(): Promise<PostgrestSingleResponse<Link[]>> {
   const supabase = createClient();
 
   try {
-    const result = await supabase.from("links").select("*");
+    const result = await supabase
+      .from("links")
+      .select("*")
+      .order("created_at", { ascending: false });
 
     return result;
   } catch (error) {

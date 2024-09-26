@@ -15,6 +15,24 @@ export async function createLink(data: TablesInsert<"links">) {
   }
 }
 
+export async function registerView(key: string) {
+  const supabase = createClient();
+
+  try {
+    const result = await supabase.rpc("incrementviewlink", {
+      x: 1,
+      keylink: key,
+    });
+
+    console.log(result);
+
+    return result;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+}
+
 export async function updateUser(userId: string, data: TablesUpdate<"users">) {
   const supabase = createClient();
 

@@ -2,6 +2,8 @@ import {
   Check,
   CircleUser,
   Copy,
+  Eye,
+  EyeOff,
   Link2,
   Loader2,
   LogOut,
@@ -16,4 +18,6 @@ export const Lucide = {
   Link2,
   CircleUser,
   Menu,
+  Eye,
+  EyeOff,
 };

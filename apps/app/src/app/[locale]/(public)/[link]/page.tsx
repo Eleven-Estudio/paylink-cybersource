@@ -11,9 +11,11 @@ export const metadata = {
 
 const page = async ({ params }: { params: { link: string } }) => {
   return (
-    <Suspense fallback={<PaymentLoading />}>
-      <Payment link={params.link} />
-    </Suspense>
+    <section className="checkout-container h-auto checkout:h-screen w-screen overflow-hidden flex items-start justify-center bg-white checkout:bg-neutral-50">
+      <Suspense fallback={<PaymentLoading />}>
+        <Payment link={params.link} />
+      </Suspense>
+    </section>
   );
 };
 
