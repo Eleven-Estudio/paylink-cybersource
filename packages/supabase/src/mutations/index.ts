@@ -24,8 +24,6 @@ export async function registerView(key: string) {
       keylink: key,
     });
 
-    console.log(result);
-
     return result;
   } catch (error) {
     logger.error(error);

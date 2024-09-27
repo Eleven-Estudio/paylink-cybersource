@@ -1,8 +1,6 @@
 "use client";
 
-import validCreditCard from "card-validator";
-
-import { capturePaymentAction } from "@/actions/checkout/capture-payment-action";
+import { createPaymentAction } from "@/actions/checkout/capture-payment-action";
 import { checkoutSchema } from "@/actions/checkout/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@v1/ui/button";
@@ -18,6 +16,7 @@ import { Input } from "@v1/ui/input";
 import { Lucide } from "@v1/ui/lucide";
 import { TypographyH4 } from "@v1/ui/typography";
 import { cn } from "@v1/ui/utils";
+import validCreditCard from "card-validator";
 import {
   type CreditCardType,
   DefaultCreditCardDelimiter,
@@ -27,7 +26,6 @@ import {
   getCreditCardType,
   registerCursorTracker,
   unformatCreditCard,
-  unformatGeneral,
 } from "cleave-zen";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -78,7 +76,7 @@ const CheckoutForm = () => {
 
   async function onSubmit(values: z.infer<typeof checkoutSchema>) {
     setStatus("loading");
-    const result = await capturePaymentAction({
+    const result = await createPaymentAction({
       ...values,
       link: (params?.link ?? "") as string,
     });
@@ -88,7 +86,7 @@ const CheckoutForm = () => {
   return (
     <div className="flex flex-col gap-4 w-full">
       <TypographyH4 className="hidden checkout:block">
-        Payment with credit card
+        Payment with card
       </TypographyH4>
       <Form {...form}>
         <form
