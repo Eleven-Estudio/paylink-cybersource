@@ -10,6 +10,7 @@
   z-index: 1;
   position: fixed;
   transform-origin: right;
+  animation: fadeInRight 0.3s ease-in-out;
 }
 
 .checkout-container::after {
@@ -27,10 +28,7 @@
 
 @media (min-width: 990px) {
 
-  .checkout-container::before {
-    display: block;
-  }
-
+  .checkout-container::before,
   .checkout-container::after {
     display: block;
   }
@@ -107,4 +105,49 @@
 
 .card-ext-img-3 {
   animation: cycleImages 9s infinite -6s;
+}
+
+/* ANIMATION FADE IN RIGHT TO LEFT OF LOADING AND OPACITY */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fade-in-right {
+  animation: fadeInRight 0.5s ease-in-out;
+}
+
+@keyframes fadeInRightBottom {
+  from {
+    opacity: 0;
+    transform: translate(20px, 20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-right-bottom {
+  animation: fadeInRightBottom 0.5s ease-in-out;
 }

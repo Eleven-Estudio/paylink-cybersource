@@ -1,5 +1,6 @@
 # ROADMAP
 
+- [ ] Add philanthropy text that 1% will be donated to such company (pending)
 - [ ] Fix animation of button payment when change status fluid reference tweets
 - [ ] Add sentry errors in payment checkout and api Cybersource errors
 - [ ] Save in table links ids authroize, capture or in table of transactions (Analizer)
