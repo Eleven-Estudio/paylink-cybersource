@@ -1,4 +1,4 @@
-const LinkWrong = () => {
+const NotFound = () => {
   return (
     <div className="flex items-center justify-center h-screen w-full bg-white z-30">
       <div className="max-w-[45ch] text-center space-y-1 flex flex-col items-center px-2 py-1">
@@ -12,4 +12,4 @@ const LinkWrong = () => {
   );
 };
 
-export default LinkWrong;
+export default NotFound;
