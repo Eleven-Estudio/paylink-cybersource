@@ -6,6 +6,7 @@ import countries from "@/data/countires-en.json";
 import statesCA from "@/data/states-ca-en.json";
 import statesUS from "@/data/states-us-en.json";
 import { COUNTRIES_REQUIRED_STATE } from "@/lib/cybersource";
+import { CODE_STATUS_LOCAL_PAYMENT } from "@/lib/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@v1/ui/button";
 import {
@@ -42,6 +43,14 @@ import CardIcons from "./card-icons";
 
 const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
   const params = useParams();
+  const [statusPayment, setStatusPayment] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({
+    type: null,
+    message: "",
+  });
+
   const [status, setStatus] = useState<"loading" | "idle">("idle");
   const [ccNumber, setCcNumber] = useState("");
   const [ccExpiration, setCcExpiration] = useState("");
@@ -94,7 +103,28 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
       ...values,
       link: (params?.link ?? "") as string,
     });
-    console.log("result", result);
+
+    if (result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.PAYMENT_SUCCESS) {
+      setStatusPayment({
+        type: "success",
+        message: "Payment successful",
+      });
+    }
+
+    if (result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR) {
+      setStatusPayment({
+        type: "error",
+        message: "Payment error",
+      });
+    }
+
+    setTimeout(() => {
+      setStatusPayment({
+        type: null,
+        message: "",
+      });
+    }, 2000);
+
     setStatus("idle");
   }
 
@@ -114,6 +144,42 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
       subscription.unsubscribe();
     };
   }, [form.watch]);
+
+  const { buttonText, buttonIcon, buttonClassname, disabled } = useMemo(() => {
+    if (statusPayment.type === "success") {
+      return {
+        buttonText: "Success",
+        buttonIcon: <Lucide.CheckCircle className="animate-pulse h-4 w-4" />,
+        buttonClassname: "bg-[#11D66F] text-[#181818] disabled:opacity-100",
+        disabled: true,
+      };
+    }
+
+    if (statusPayment.type === "error") {
+      return {
+        buttonText: "Error",
+        buttonIcon: <Lucide.XCircle className="h-4 w-4" />,
+        buttonClassname: "bg-red-700 disabled:opacity-100",
+        disabled: true,
+      };
+    }
+
+    if (status === "loading") {
+      return {
+        buttonText: "Processing...",
+        buttonIcon: <Lucide.Loader className="animate-spin h-4 w-4" />,
+        disabled: true,
+        buttonClassname: "",
+      };
+    }
+
+    return {
+      buttonText: "Pay",
+      buttonIcon: "",
+      disabled: status !== "idle",
+      buttonClassname: "",
+    };
+  }, [statusPayment, status]);
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -440,22 +506,19 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
           </div>
 
           <Button
-            disabled={status === "loading"}
-            className="w-full text-lg mt-3"
+            disabled={disabled}
+            className={cn([
+              "w-full text-lg mt-3 flex items-center justify-center gap-2 disabled:cursor-not-allowed",
+              buttonClassname,
+            ])}
             type="submit"
             size="lg"
           >
-            {status === "loading" ? (
-              <>
-                <Lucide.Loader className="animate-spin mr-2 h-4 w-4" />
-                Processing...
-              </>
-            ) : (
-              "Pay"
-            )}
+            {buttonIcon}
+            {buttonText}
           </Button>
 
-          <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-400">
+          <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-400 transition-all duration-300">
             <span>Powered by </span>
             <Logo className="h-3 w-auto fill-neutral-400" />
           </div>

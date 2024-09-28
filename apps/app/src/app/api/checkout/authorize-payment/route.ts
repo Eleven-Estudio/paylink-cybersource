@@ -241,7 +241,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       code: CODE_STATUS_LOCAL_PAYMENT.PAYMENT_SUCCESS,
-      data: capturePaymentRes.data,
     });
   } catch (error) {
     let code = "";

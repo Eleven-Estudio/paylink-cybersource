@@ -26,24 +26,31 @@ export const generatePaymentAction = actionClientWithMeta
       address,
     } = input;
 
-    const res = await axios.post(
-      `${process.env.NEXT_API_URL}/api/checkout/authorize-payment`,
-      {
-        link,
-        ccNumber,
-        ccCvv,
-        ccExpiration,
-        ccName,
-        email,
-        name,
-        lastName,
-        country,
-        state,
-        zip,
-        city,
-        address,
-      },
-    );
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_API_URL}/api/checkout/authorize-payment`,
+        {
+          link,
+          ccNumber,
+          ccCvv,
+          ccExpiration,
+          ccName,
+          email,
+          name,
+          lastName,
+          country,
+          state,
+          zip,
+          city,
+          address,
+        },
+      );
+      return res.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return error.response?.data;
+      }
 
-    return res.data;
+      return error;
+    }
   });

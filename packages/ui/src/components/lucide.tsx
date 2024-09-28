@@ -1,5 +1,6 @@
 import {
   Check,
+  CheckCircle,
   CircleUser,
   Copy,
   Eye,
@@ -8,6 +9,7 @@ import {
   Loader2,
   LogOut,
   Menu,
+  XCircle,
 } from "lucide-react";
 
 export const Lucide = {
@@ -20,4 +22,6 @@ export const Lucide = {
   Menu,
   Eye,
   EyeOff,
+  CheckCircle,
+  XCircle,
 };
