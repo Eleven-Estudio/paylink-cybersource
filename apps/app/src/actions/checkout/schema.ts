@@ -1,5 +1,6 @@
-import { COUNTRIES_REQUIRED_STATE } from "@/lib/cybersource";
+import { AVAILABLE_CARDS, COUNTRIES_REQUIRED_STATE } from "@/lib/cybersource";
 import validCreditCard from "card-validator";
+import { getCreditCardType } from "cleave-zen";
 import { z } from "zod";
 
 export const checkoutSchema = z
@@ -7,11 +8,29 @@ export const checkoutSchema = z
     email: z.string().email({ message: "Required" }),
     "cc-number": z
       .string()
-      .min(1, { message: "Required" })
+      .min(14, { message: "Card number min 14 digits" })
+      .max(19, { message: "Card number max 19 digits" })
+      .refine(
+        (value) => {
+          const typeCard = getCreditCardType(value);
+
+          const isAvailable =
+            AVAILABLE_CARDS?.includes(typeCard) || AVAILABLE_CARDS === "ALL";
+
+          if (!isAvailable) {
+            return false;
+          }
+
+          return true;
+        },
+        {
+          message: "Card not available",
+        },
+      )
       .refine(
         (value) => {
           const cardValidator = validCreditCard.number(value);
-          return cardValidator.isPotentiallyValid;
+          return cardValidator.isValid;
         },
         {
           message: "Invalid credit card number",

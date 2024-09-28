@@ -9,6 +9,8 @@ import crypto from "crypto";
 const AuthenticationType = "http_signature";
 const RunEnvironment = "apitest.cybersource.com"; // TODO: make this configurable
 const MerchantId = process.env.CYBERSORUCE_MERCHANT_ID;
+const availableCards =
+  process.env.NEXT_PUBLIC_CYBERSOURCE_CARDS_AVAILABLE?.split(",") || "ALL";
 
 // http_signature parameters
 const MerchantKeyId = process.env.CYBERSORUCE_API_KEY;
@@ -31,6 +33,8 @@ const LogDirectory = "log";
 const LogfileMaxSize = "5242880"; //10 MB In Bytes
 const EnableMasking = true;
 
+export const AVAILABLE_CARDS =
+  process.env.NEXT_PUBLIC_CYBERSOURCE_CARDS_AVAILABLE?.split(",") ?? "ALL";
 export const COUNTRIES_REQUIRED_STATE = ["US", "CA"];
 
 /*
@@ -48,6 +52,7 @@ export const MerchantConfig = () => {
     merchantID: MerchantId,
     merchantKeyId: MerchantKeyId,
     merchantsecretKey: MerchantSecretKey,
+    availableCards: availableCards,
 
     keyAlias: KeyAlias,
     keyPass: KeyPass,
@@ -157,9 +162,9 @@ export enum CardTypeCybersource {
   jcb = "007",
   enroute = "014",
   jal = "021",
-  maestro = "024",
-  delta = "031",
-  visa_electron = "033",
+  maestro = "042",
+  delta = "001",
+  visa_electron = "001",
   dankort = "034",
   cartes_bancaires = "036",
   carta_si = "037",

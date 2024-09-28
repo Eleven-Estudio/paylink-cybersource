@@ -200,27 +200,16 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
                           const formatted = formatCreditCard(value);
                           const type = getCreditCardType(value);
                           const raw = unformatCreditCard(value);
-
                           const cardValidator = validCreditCard.number(raw);
-                          if (!cardValidator.isPotentiallyValid) {
-                            form.setError("cc-number", {
-                              message: "Invalid credit card number",
-                            });
-                          } else {
-                            const cvvLength =
-                              cardValidator.card?.code.size || 4;
-                            form.setValue(
-                              "cc-cvv",
-                              form.getValues("cc-cvv")?.slice(0, cvvLength) ||
-                                "",
-                            );
-                            setMaxLenghtCvv(cvvLength);
-                            form.clearErrors("cc-number");
-                          }
+                          const cvvLength = cardValidator.card?.code.size || 4;
+                          const cvvPrevValue =
+                            form.getValues("cc-cvv")?.slice(0, cvvLength) || "";
+                          form.setValue("cc-cvv", cvvPrevValue);
 
+                          setMaxLenghtCvv(cvvLength);
                           setCcNumber(formatted);
                           setType(type);
-
+                          form.clearErrors("cc-number");
                           field.onChange(raw);
                         }}
                         autoComplete="cc-number"
@@ -255,17 +244,6 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
                           const formatted = formatDate(value, {
                             datePattern: ["m", "y"],
                           });
-
-                          const cardValidator =
-                            validCreditCard.expirationDate(formatted);
-
-                          if (!cardValidator.isPotentiallyValid) {
-                            form.setError("cc-expiration", {
-                              message: "Invalid expiration date",
-                            });
-                          } else {
-                            form.clearErrors("cc-expiration");
-                          }
 
                           setCcExpiration(formatted);
                           field.onChange(formatted);
