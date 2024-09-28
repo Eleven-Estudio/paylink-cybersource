@@ -3,11 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "sideEffects": false,
-  "files": [
-    "tailwind.config.ts",
-    "postcss.config.js",
-    "globals.css"
-  ],
+  "files": ["tailwind.config.ts", "postcss.config.js", "globals.css"],
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "biome check .",
@@ -34,6 +30,7 @@
     "./dropdown-menu": "./src/components/dropdown-menu.tsx",
     "./table": "./src/components/table.tsx",
     "./skeleton": "./src/components/skeleton.tsx",
+    "./select": "./src/components/select.tsx",
     "./copy-button": "./src/components/copy-button.tsx",
     "./avatar": "./src/components/avatar.tsx",
     "./dialog": "./src/components/dialog.tsx",

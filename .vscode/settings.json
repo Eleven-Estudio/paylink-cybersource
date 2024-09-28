@@ -23,5 +23,8 @@
   "terminal.integrated.localEchoStyle": "dim",
   "search.exclude": {
     "**/node_modules": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
   }
 }

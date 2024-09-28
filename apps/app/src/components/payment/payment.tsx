@@ -1,6 +1,7 @@
 import { BUSINESS } from "@/business";
 import { registerView } from "@v1/supabase/mutations";
 import { getLink } from "@v1/supabase/queries";
+import { headers } from "next/headers";
 import CheckoutForm from "./checkout-form";
 import CompanyInfo from "./company-info";
 import LinkWrong from "./link-wrong";
@@ -8,6 +9,8 @@ import ServiceInfo from "./service-info";
 
 const Payment = async ({ link }: { link: string }) => {
   const data = await getLink(link);
+  const country = headers().get("x-vercel-ip-country") || "US";
+
   await registerView(link);
 
   if (!data) return <LinkWrong />;
@@ -25,7 +28,7 @@ const Payment = async ({ link }: { link: string }) => {
           />
         </div>
         <div className="px-4 py-4 mt-12 checkout:mt-0 checkout:p-0 sm:max-w-[380px] mx-auto checkout:mx-0 w-full">
-          <CheckoutForm />
+          <CheckoutForm defaultCountry={country} />
         </div>
       </div>
     </div>

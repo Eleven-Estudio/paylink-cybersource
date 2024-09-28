@@ -2,10 +2,9 @@
 
 import { actionClientWithMeta } from "@/actions/safe-action";
 import axios from "axios";
-import { useRouter } from "next/router";
 import { checkoutSchema } from "./schema";
 
-export const createPaymentAction = actionClientWithMeta
+export const generatePaymentAction = actionClientWithMeta
   .schema(checkoutSchema)
   .metadata({
     name: "capture-payment",
@@ -18,6 +17,13 @@ export const createPaymentAction = actionClientWithMeta
       "cc-expiration": ccExpiration,
       email,
       "cc-name": ccName,
+      name,
+      lastName,
+      country,
+      state,
+      zip,
+      city,
+      address,
     } = input;
 
     const res = await axios.post(
@@ -29,8 +35,15 @@ export const createPaymentAction = actionClientWithMeta
         ccExpiration,
         ccName,
         email,
+        name,
+        lastName,
+        country,
+        state,
+        zip,
+        city,
+        address,
       },
     );
 
-    return true;
+    return res.data;
   });
