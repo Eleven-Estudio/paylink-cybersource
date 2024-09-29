@@ -1,6 +1,8 @@
 # ROADMAP
 
 - [ ] Add philanthropy text that 1% will be donated to such company (pending)
+- [ ] Add image on payment information [https://b.stripecdn.com/docs-statics-srv/assets/link-in-checkout.2eb9f8d06da3dca74af9b81fa7524049.png]
+- [ ] Add custom branding in payment form [https://docs.stripe.com/payment-links/customize] [https://dashboard.stripe.com/test/settings/branding]
 - [ ] Fix animation of button payment when change status fluid reference tweets
 - [ ] Add sentry errors in payment checkout and api Cybersource errors
 - [ ] Save in table links ids authroize, capture or in table of transactions (Analizer)

@@ -31,10 +31,12 @@ import {
   registerCursorTracker,
   unformatCreditCard,
 } from "cleave-zen";
+import { AnimatePresence } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import CardIcons from "./card-icons";
+import ErrorMessage from "./error-message";
 
 export const FormPaymentSkeleton = () => {
   return (
@@ -71,9 +73,14 @@ export const FormPaymentSkeleton = () => {
 interface FormPaymentProps {
   defaultValues: Partial<z.infer<typeof checkoutSchema>>;
   onSubmit: (values: z.infer<typeof checkoutSchema>) => Promise<void>;
+  status: "success" | "error" | null;
 }
 
-const FormPayment = ({ defaultValues, onSubmit }: FormPaymentProps) => {
+const FormPayment = ({
+  defaultValues,
+  onSubmit,
+  status: statusPayment,
+}: FormPaymentProps) => {
   const [ccNumber, setCcNumber] = useState("");
   const [ccExpiration, setCcExpiration] = useState("");
   const [type, setType] = useState<CreditCardType | null>(null);
@@ -98,6 +105,7 @@ const FormPayment = ({ defaultValues, onSubmit }: FormPaymentProps) => {
     },
   });
 
+  const errorMessageRef = useRef<HTMLDivElement | null>(null);
   const ccNumberRef = useRef<HTMLInputElement | null>(null);
   const ccExpirationRef = useRef<HTMLInputElement | null>(null);
   const watchCountry = form.watch("country");
@@ -142,6 +150,15 @@ const FormPayment = ({ defaultValues, onSubmit }: FormPaymentProps) => {
       subscription.unsubscribe();
     };
   }, [form.watch]);
+
+  useEffect(() => {
+    console.log("statusPayment", statusPayment);
+    if (statusPayment === "error") {
+      setTimeout(() => {
+        errorMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [statusPayment]);
 
   useEffect(() => {
     // registerCursorTracker itself returns an unregister destructor
@@ -481,17 +498,25 @@ const FormPayment = ({ defaultValues, onSubmit }: FormPaymentProps) => {
           />
         </div>
 
+        <AnimatePresence initial={false}>
+          {statusPayment === "error" && <ErrorMessage ref={errorMessageRef} />}
+        </AnimatePresence>
+
         <Button
-          disabled={disabled}
+          disabled={
+            !form.formState.isDirty || form.formState.isSubmitting || disabled
+          }
           className={cn([
-            "w-full text-lg mt-3 flex items-center justify-center gap-2 disabled:cursor-not-allowed",
+            "w-full text-lg mt-3 flex items-center justify-center gap-2 disabled:cursor-not-allowed active:scale-[1.03] transition-all duration-300 relative disabled:pointer-events-auto",
             buttonClassname,
           ])}
           type="submit"
           size="lg"
         >
-          {buttonIcon}
           {buttonText}
+          <span className="flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none disabled:pointer-events-none">
+            {buttonIcon}
+          </span>
         </Button>
       </form>
     </Form>

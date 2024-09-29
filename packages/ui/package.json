@@ -37,6 +37,7 @@
     "./lucide": "./src/components/lucide.tsx",
     "./form": "./src/components/form.tsx",
     "./label": "./src/components/label.tsx",
+    "./alert": "./src/components/alert.tsx",
     "./textarea": "./src/components/textarea.tsx",
     "./tailwind.config": "./tailwind.config.ts",
     "./postcss": "./postcss.config.js",

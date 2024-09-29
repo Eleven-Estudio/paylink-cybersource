@@ -1,6 +1,7 @@
 import {
   Check,
   CheckCircle,
+  CircleAlert,
   CircleUser,
   Copy,
   Eye,
@@ -24,4 +25,5 @@ export const Lucide = {
   EyeOff,
   CheckCircle,
   XCircle,
+  CircleAlert,
 };

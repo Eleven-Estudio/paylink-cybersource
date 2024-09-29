@@ -7,17 +7,18 @@ import { Skeleton } from "@v1/ui/skeleton";
 import { TypographyH4 } from "@v1/ui/typography";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { z } from "zod";
 import FormPayment, { FormPaymentSkeleton } from "./form-payment";
 import Powered from "./powered";
+import SuccessMessage from "./success-message";
 
 export const CheckoutFormSkeleton = () => {
   return (
     <div className="flex flex-col gap-4 w-full">
       <Skeleton className="w-[170px] h-7" />
       <FormPaymentSkeleton />
-      <Powered />
+      <Powered className="fade-in" />
     </div>
   );
 };
@@ -52,35 +53,43 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
         message: "Payment error",
       });
     }
-
-    setTimeout(() => {
-      setStatusPayment({
-        type: null,
-        message: "",
-      });
-    }, 2000);
   }
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setStatusPayment({
+  //       type: "success",
+  //       message: "",
+  //     });
+  //   }, 1000);
+  // }, []);
 
   return (
     <>
       <AnimatePresence initial={false}>
-        <motion.div
-          key={"checkout-form"}
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col gap-4 w-full"
-        >
-          <TypographyH4 className="hidden checkout:block">
-            Payment with card
-          </TypographyH4>
-          <FormPayment
-            onSubmit={onSubmit}
-            defaultValues={{ country: defaultCountry }}
-          />
-          <Powered />
-        </motion.div>
+        {statusPayment.type !== "success" && (
+          <motion.div
+            key={"checkout-form"}
+            initial={{ opacity: 1, display: "flex" }}
+            animate={{ opacity: 1, display: "flex" }}
+            exit={{ opacity: 0, display: "none" }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-col gap-4 w-full"
+          >
+            <TypographyH4 className="hidden checkout:block">
+              Payment with card
+            </TypographyH4>
+            <FormPayment
+              status={statusPayment.type}
+              onSubmit={onSubmit}
+              defaultValues={{ country: defaultCountry }}
+            />
+            <Powered className="fade-in" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence initial={false}>
+        {statusPayment.type === "success" && <SuccessMessage />}
       </AnimatePresence>
     </>
   );

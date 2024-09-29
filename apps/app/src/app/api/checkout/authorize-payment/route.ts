@@ -6,16 +6,14 @@ import {
   getHttpSignature,
 } from "@/lib/cybersource";
 import { CODE_STATUS_LOCAL_PAYMENT } from "@/lib/errors";
-import { logger } from "@v1/logger";
 import { getLink } from "@v1/supabase/queries";
 import axios from "axios";
 import { getCreditCardType } from "cleave-zen";
 import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
-import {
-  EnumPaymentAuthorizationStatus200,
-  type PaymentAuthorizationError400,
-  type PaymentAuthorizationSuccess,
+import type {
+  PaymentAuthorizationError400,
+  PaymentAuthorizationSuccess,
 } from "types/cybersource/payment.authorization";
 import type {
   CapturePaymentError400,
@@ -28,7 +26,6 @@ const ENDPOINT_CAPTURE_PAYMENT_WITH_ID = (id: string) =>
   `/pts/v2/payments/${id}/captures`;
 
 export async function POST(req: Request) {
-  // try {
   const {
     link,
     ccNumber,
@@ -134,6 +131,7 @@ export async function POST(req: Request) {
       },
     },
   };
+
   const merchantConfig = MerchantConfig();
   const digestAuthorize = generateDigest(JSON.stringify(payload));
   const date = new Date(Date.now()).toUTCString();
@@ -183,6 +181,7 @@ export async function POST(req: Request) {
   } catch (error) {
     let code = "";
     let statusRequest = 400;
+    console.log("AUTHORIZE PAYMENT ERROR", error);
 
     if (axios.isAxiosError(error)) {
       if (error.status && error.status >= 400) {
@@ -247,6 +246,7 @@ export async function POST(req: Request) {
     let statusRequest = 400;
 
     if (axios.isAxiosError(error)) {
+      console.log("CAPTURE PAYMENT ERROR", error);
       if (error.status && error.status >= 400) {
         const errorData = error.response?.data as CapturePaymentError400;
         code = CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR;

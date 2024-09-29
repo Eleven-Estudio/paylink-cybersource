@@ -24,7 +24,7 @@ const page = async ({ params }: { params: { link: string } }) => {
   // if (!data) return notFound();
 
   return (
-    <div className="max-w-[920px] w-full mx-auto z-10 checkout:pt-[65px] px-1 sm:px-4">
+    <div className="max-w-[920px] w-full mx-auto z-10 checkout:pt-[65px] px-1 sm:px-4 transition-all duration-300 payment-container">
       <div className="flex flex-col checkout:flex-row justify-between w-full">
         <div className="flex flex-col checkout:max-w-[380px] fade-in">
           <CompanyInfo name={BUSINESS.name} logo={BUSINESS.logo} />
