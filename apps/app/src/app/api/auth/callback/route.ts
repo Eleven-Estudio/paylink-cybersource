@@ -1,8 +1,9 @@
+import { getURL } from "@/lib/url";
 import { createClient } from "@v1/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/";
 
@@ -10,18 +11,13 @@ export async function GET(request: Request) {
     const supabase = createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      const forwardedHost = request.headers.get("x-forwarded-host");
-      const isLocalEnv = process.env.NODE_ENV === "development";
-
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`);
-      }
-      if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
-      }
-      return NextResponse.redirect(`${origin}${next}`);
+      const baseUrl = getURL();
+      return NextResponse.redirect(
+        `${baseUrl}${next.startsWith("/") ? next.slice(1) : next}`,
+      );
     }
   }
 
-  return NextResponse.redirect(`${origin}?error=auth-code-error`);
+  const baseUrl = getURL();
+  return NextResponse.redirect(`${baseUrl}?error=auth-code-error`);
 }
