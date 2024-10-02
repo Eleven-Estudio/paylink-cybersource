@@ -238,6 +238,8 @@ export async function POST(req: Request) {
       },
     );
 
+    console.log("CAPTURE PAYMENT RESPONSE", capturePaymentRes.data);
+
     return NextResponse.json({
       code: CODE_STATUS_LOCAL_PAYMENT.PAYMENT_SUCCESS,
     });
