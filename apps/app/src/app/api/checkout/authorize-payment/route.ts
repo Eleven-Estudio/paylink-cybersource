@@ -6,7 +6,7 @@ import {
   getHttpSignature,
 } from "@/lib/cybersource";
 import { CODE_STATUS_LOCAL_PAYMENT } from "@/lib/errors";
-import { getLink } from "@v1/supabase/queries";
+import { getLinkPublic } from "@v1/supabase/server-queries";
 import axios from "axios";
 import { getCreditCardType } from "cleave-zen";
 import { nanoid } from "nanoid";
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const dataLink = await getLink(link);
+  const dataLink = await getLinkPublic(link);
 
   if (!dataLink) {
     return NextResponse.json(
