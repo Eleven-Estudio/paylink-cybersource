@@ -4,7 +4,7 @@ import CompanyInfo from "@/components/payment/company-info";
 import ServiceInfo from "@/components/payment/service-info";
 import { CODE_STATUS_LOCAL_PAYMENT } from "@/lib/errors";
 import { registerView } from "@v1/supabase/mutations";
-import { getLink } from "@v1/supabase/queries";
+import { getLinkPublic } from "@v1/supabase/server-queries";
 import { headers } from "next/headers";
 
 export const metadata = {
@@ -17,7 +17,7 @@ const page = async ({ params }: { params: { link: string } }) => {
   // Create fake call to promise with 3 seconds
   await new Promise((resolve) => setTimeout(resolve, 3000));
   const country = headers().get("x-vercel-ip-country") || "US";
-  const data = await getLink(params.link);
+  const data = await getLinkPublic(params.link);
   await registerView(params.link);
 
   if (!data) throw Error(CODE_STATUS_LOCAL_PAYMENT.LINK_NOT_FOUND);

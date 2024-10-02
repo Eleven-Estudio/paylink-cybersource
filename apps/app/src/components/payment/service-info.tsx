@@ -1,12 +1,13 @@
+import type { Tables } from "@v1/supabase/types";
 import { Skeleton } from "@v1/ui/skeleton";
 import { TypographyH1, TypographyH2 } from "@v1/ui/typography";
 import React from "react";
 
 interface Props {
   title: string;
-  description?: string;
+  description?: string | null;
   amount: number;
-  currency: "USD" | "GTQ";
+  currency: Tables<"links">["currency"];
 }
 
 export const ServiceInfoSkeleton = () => {
