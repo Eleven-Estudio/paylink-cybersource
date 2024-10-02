@@ -1,8 +1,10 @@
 "use client";
 
-import { createLinkAction } from "@/actions/link/create-link-action";
+import { insertLinkAction } from "@/actions/link/create-link-action";
 import { createLinkSchema } from "@/actions/link/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
+import type { Tables } from "@v1/supabase/types";
 import { Button } from "@v1/ui/button";
 import {
   Dialog,
@@ -37,6 +39,7 @@ export const TypeAction = {
 const DialogFormLink = ({ action }: { action: Action }) => {
   const [status, setStatus] = useState<"loading" | "idle">("idle");
   const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof createLinkSchema>>({
     resolver: zodResolver(createLinkSchema),
@@ -49,19 +52,22 @@ const DialogFormLink = ({ action }: { action: Action }) => {
 
   async function onSubmit(values: z.infer<typeof createLinkSchema>) {
     setStatus("loading");
-    const result = await createLinkAction(values);
+    const result = await insertLinkAction(values);
+    console.log(result);
 
     if (
       result?.data?.status === 201 &&
       result?.data?.statusText === "Created"
     ) {
       toast.success("Link created successfully");
+      queryClient.refetchQueries({ queryKey: ["links"] });
       setOpen(false);
     }
 
     if (result?.data?.status && result?.data?.status >= 400) {
       toast.error("Error creating link");
     }
+
     setStatus("idle");
   }
 

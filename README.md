@@ -1,5 +1,6 @@
 # ROADMAP
 
+- [ ] Add own layout for [link] and [login](analalize)
 - [ ] Add philanthropy text that 1% will be donated to such company (pending)
 - [ ] Add image on payment information [https://b.stripecdn.com/docs-statics-srv/assets/link-in-checkout.2eb9f8d06da3dca74af9b81fa7524049.png]
 - [ ] Add custom branding in payment form [https://docs.stripe.com/payment-links/customize] [https://dashboard.stripe.com/test/settings/branding]
@@ -15,3 +16,4 @@
 - [ ] Add text of  "With technology of Cybersource(logo)"
 - [ ] Payment checkout Medusa and Cybersource
 - [ ] Detect when user leaves the page
+- [ ] Add inspiration of eleven [dub.co, v1, midday, stripe]

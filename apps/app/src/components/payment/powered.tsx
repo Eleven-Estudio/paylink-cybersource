@@ -12,8 +12,15 @@ const Powered = ({ className }: { className: string }) => {
         className,
       )}
     >
-      <span>Powered by </span>
-      <Logo className="h-3 w-auto fill-neutral-400" />
+      <a
+        href="https://elevenestudio.link/pw-cyberpay"
+        target="_blank"
+        className="flex items-center gap-2"
+        rel="noreferrer"
+      >
+        <span>Powered by </span>
+        <Logo className="h-3 w-auto fill-neutral-400" />
+      </a>
     </div>
   );
 };

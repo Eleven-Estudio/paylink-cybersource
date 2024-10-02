@@ -193,7 +193,6 @@ const FormPayment = ({
                 <Input
                   placeholder="Email"
                   autoComplete="email"
-                  className="rounded-lg"
                   type="email"
                   {...field}
                 />
@@ -212,7 +211,6 @@ const FormPayment = ({
                 <FormControl>
                   <Input
                     placeholder="First name"
-                    className="rounded-lg"
                     autoComplete="given-name"
                     {...field}
                   />
@@ -231,7 +229,6 @@ const FormPayment = ({
                   <Input
                     placeholder="Last name"
                     autoComplete="family-name"
-                    className="rounded-lg"
                     {...field}
                   />
                 </FormControl>
@@ -252,7 +249,6 @@ const FormPayment = ({
                 <FormControl>
                   <Input
                     placeholder="Address"
-                    className="rounded-lg"
                     autoComplete="address-line1"
                     {...field}
                   />
@@ -270,7 +266,6 @@ const FormPayment = ({
                 <FormControl>
                   <Input
                     placeholder="City"
-                    className="rounded-lg"
                     autoComplete="address-level2"
                     {...field}
                   />
@@ -348,7 +343,6 @@ const FormPayment = ({
                     <FormControl>
                       <Input
                         placeholder="State (Optional)"
-                        className="rounded-lg"
                         autoComplete="address-level2"
                         {...field}
                       />
@@ -371,7 +365,6 @@ const FormPayment = ({
                           ? "Postal code"
                           : "Postal code (Optional)"
                       }
-                      className="rounded-lg"
                       autoComplete="postal-code"
                       {...field}
                     />
@@ -451,7 +444,6 @@ const FormPayment = ({
                       }}
                       placeholder="MM/YY"
                       autoComplete="cc-exp"
-                      className="rounded-lg"
                     />
                   </FormControl>
                   <FormMessage />
@@ -466,9 +458,9 @@ const FormPayment = ({
                 <FormItem>
                   <FormControl>
                     <Input
+                      type="password"
                       placeholder="CVC"
                       autoComplete="cc-csc"
-                      className="rounded-lg"
                       maxLength={maxLenghtCvv}
                       {...field}
                     />
@@ -488,7 +480,6 @@ const FormPayment = ({
                   <Input
                     placeholder="Full name on card"
                     autoComplete="cc-name"
-                    className="rounded-lg"
                     {...field}
                   />
                 </FormControl>

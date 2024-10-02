@@ -7,8 +7,8 @@ import Google from "@v1/ui/icons/google";
 export function GoogleSignin({ label }: { label: string }) {
   const supabase = createClient();
 
-  const handleSignin = () => {
-    supabase.auth.signInWithOAuth({
+  const handleSignin = async () => {
+    await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/api/auth/callback`,

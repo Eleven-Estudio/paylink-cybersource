@@ -4,11 +4,14 @@ import {
   CircleAlert,
   CircleUser,
   Copy,
+  CornerDownRight,
   Eye,
   EyeOff,
+  Link,
   Link2,
   Loader2,
   LogOut,
+  LogOutIcon,
   Menu,
   XCircle,
 } from "lucide-react";
@@ -26,4 +29,7 @@ export const Lucide = {
   CheckCircle,
   XCircle,
   CircleAlert,
+  LogOut: LogOutIcon,
+  Link,
+  CornerDownRight,
 };

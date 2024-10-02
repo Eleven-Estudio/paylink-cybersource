@@ -2,11 +2,11 @@ import { logger } from "@v1/logger";
 import { createClient } from "@v1/supabase/server";
 import type { TablesInsert, TablesUpdate } from "../types";
 
-export async function createLink(data: TablesInsert<"links">) {
+export async function insertLink(data: TablesInsert<"links">) {
   const supabase = createClient();
 
   try {
-    const result = await supabase.from("links").insert(data);
+    const result = await supabase.from("links").insert(data).select();
 
     return result;
   } catch (error) {
@@ -19,7 +19,7 @@ export async function registerView(key: string) {
   const supabase = createClient();
 
   try {
-    const result = await supabase.rpc("incrementviewlink", {
+    const result = await supabase.rpc("increment_view_link", {
       x: 1,
       keylink: key,
     });

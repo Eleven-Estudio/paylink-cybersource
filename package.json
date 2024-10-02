@@ -29,5 +29,8 @@
     "packages/*",
     "apps/*",
     "tooling/*"
-  ]
+  ],
+  "dependencies": {
+    "@tanstack/react-query-devtools": "^5.59.0"
+  }
 }

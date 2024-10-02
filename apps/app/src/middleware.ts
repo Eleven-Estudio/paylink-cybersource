@@ -1,19 +1,19 @@
 import { updateSession } from "@v1/supabase/middleware";
-import { createI18nMiddleware } from "next-international/middleware";
 import { type NextRequest, NextResponse } from "next/server";
 
-const I18nMiddleware = createI18nMiddleware({
-  locales: ["es", "en"],
-  defaultLocale: "es",
-  urlMappingStrategy: "rewrite",
-});
+const PUBLIC_ABSOLUTE_PATHS = ["/login"];
+const PRIVATE_ABSOLUTE_PATHS = ["/"];
 
 export async function middleware(request: NextRequest) {
-  const { response, user } = await updateSession(
-    request,
-    I18nMiddleware(request),
-  );
+  const { response, user } = await updateSession(request);
 
+  // if (
+  //   !PUBLIC_ABSOLUTE_PATHS.includes(request.nextUrl.pathname) &&
+  //   !PRIVATE_ABSOLUTE_PATHS.includes(request.nextUrl.pathname)
+  // ) {
+  //   return response;
+  // }
+  // Redirigir a /login si no está autenticado y no es la ruta de login
   if (!request.nextUrl.pathname.endsWith("/login") && !user) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
