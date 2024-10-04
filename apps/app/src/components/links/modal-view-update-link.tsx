@@ -1,4 +1,4 @@
-import type { updateLinkSchema } from "@/actions/link/schema";
+import type { createLinkSchema, updateLinkSchema } from "@/actions/link/schema";
 import { updateLinkAction } from "@/actions/link/update-link-action";
 // import { useQuery } from "@supabase-cache-helpers/postgrest-react-query";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -110,7 +110,11 @@ const ModalViewUpdateLink = () => {
               ) : (
                 <FormLink
                   defaultValues={defaultValues}
-                  onSubmit={onSubmit}
+                  onSubmit={
+                    onSubmit as (
+                      values: z.infer<typeof createLinkSchema>,
+                    ) => void
+                  }
                   status={status}
                   action="edit"
                 />
