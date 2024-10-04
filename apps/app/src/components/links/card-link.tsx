@@ -88,6 +88,8 @@ const CardLink = ({
                   <Lucide.CornerDownRight className="w-3 h-3 shrink-0 text-gray-400" />
                   <a
                     href={url}
+                    target="_blank"
+                    rel="noreferrer"
                     onClick={handleClickLink}
                     className="truncate text-gray-500 transition-colors hover:text-gray-700 hover:underline hover:underline-offset-2"
                   >
