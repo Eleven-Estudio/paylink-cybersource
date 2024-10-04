@@ -12,9 +12,9 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
       const baseUrl = getURL();
-      return NextResponse.redirect(
-        `${baseUrl}${next.startsWith("/") ? next.slice(1) : next}`,
-      );
+      const redirectUrl = `${baseUrl}${next.startsWith("/") ? next.slice(1) : next}`;
+
+      return NextResponse.redirect(redirectUrl);
     }
   }
 

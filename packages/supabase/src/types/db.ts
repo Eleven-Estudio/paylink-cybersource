@@ -62,6 +62,44 @@ export type Database = {
           },
         ]
       }
+      transactions: {
+        Row: {
+          created_at: string
+          id: number
+          link_id: number
+          status: Database["public"]["Enums"]["status_transaction"]
+          transaction_id: string
+          transaction_meta_data: Json
+          type: Database["public"]["Enums"]["type_transaction"]
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          link_id: number
+          status: Database["public"]["Enums"]["status_transaction"]
+          transaction_id: string
+          transaction_meta_data: Json
+          type: Database["public"]["Enums"]["type_transaction"]
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          link_id?: number
+          status?: Database["public"]["Enums"]["status_transaction"]
+          transaction_id?: string
+          transaction_meta_data?: Json
+          type?: Database["public"]["Enums"]["type_transaction"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           avatar_url: string | null
@@ -111,7 +149,15 @@ export type Database = {
       }
     }
     Enums: {
-      status: "pending" | "paid" | "failed" | "canceled" | "refunded"
+      status:
+        | "pending"
+        | "paid"
+        | "failed"
+        | "canceled"
+        | "refunded"
+        | "authorized"
+      status_transaction: "success" | "error"
+      type_transaction: "authorization" | "capture"
     }
     CompositeTypes: {
       [_ in never]: never

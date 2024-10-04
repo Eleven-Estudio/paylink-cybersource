@@ -1,10 +1,12 @@
 import { BUSINESS } from "@/business";
 import { linkConstructor } from "@/lib/link-constructor";
+import type { Tables } from "@v1/supabase/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@v1/ui/avatar";
 import { CopyButton } from "@v1/ui/copy-button";
 import { Lucide } from "@v1/ui/lucide";
 import React from "react";
 import DateTooltip from "./date-tooltip";
+import TagBadge, { type stateProps } from "./status-badge";
 import CreatedByTooltip from "./user-tooltip";
 
 interface Props {
@@ -17,9 +19,10 @@ interface Props {
   };
   views: number;
   created_at: string;
+  state: Tables<"links">["state"];
 }
 
-const CardLink = ({ title, link, user, views, created_at }: Props) => {
+const CardLink = ({ title, link, user, views, created_at, state }: Props) => {
   const url = linkConstructor({
     domain: BUSINESS.domain,
     key: link,
@@ -82,6 +85,7 @@ const CardLink = ({ title, link, user, views, created_at }: Props) => {
         </div>
 
         <div className="flex items-center justify-end gap-2 sm:gap-5">
+          <TagBadge state={state as stateProps} />
           <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-800">
             {/* Views */}
             <div className="hidden items-center sm:flex gap-1 whitespace-nowrap px-1.5 py-0.5 transition-colors hover:bg-gray-100">

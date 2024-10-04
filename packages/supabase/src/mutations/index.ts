@@ -44,3 +44,16 @@ export async function updateUser(userId: string, data: TablesUpdate<"users">) {
     throw error;
   }
 }
+
+export async function registerTransaction(data: TablesInsert<"transactions">) {
+  const supabase = createClient();
+
+  try {
+    const result = await supabase.from("transactions").insert(data);
+    console.log("RESULT REGISTER TRANSACTION", result);
+    return result;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+}

@@ -15,6 +15,7 @@ import type {
   CapturePaymentResponse,
 } from "@/types/cybersource/payment.capture";
 import type { PaymentError500 } from "@/types/cybersource/payment.general";
+import { registerTransaction } from "@v1/supabase/mutations";
 import { getLinkPublic } from "@v1/supabase/server-queries";
 import axios from "axios";
 import { getCreditCardType } from "cleave-zen";
@@ -168,6 +169,20 @@ export async function POST(req: Request) {
     authorizePaymentId = authorizePaymentRes.data.reconciliationId;
 
     if (authorizePaymentRes.data.errorInformation?.reason) {
+      await registerTransaction({
+        link_id: dataLink.id,
+        type: "authorization",
+        status: "success",
+        transaction_id: authorizePaymentId,
+        transaction_meta_data: {
+          code: CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR,
+          statusCode: 201,
+          status: authorizePaymentRes.data.status,
+          reason: authorizePaymentRes.data.errorInformation?.reason,
+          message: authorizePaymentRes.data.errorInformation?.message,
+        },
+      });
+
       return NextResponse.json(
         {
           code: CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR,
@@ -177,10 +192,28 @@ export async function POST(req: Request) {
       );
     }
 
+    await registerTransaction({
+      link_id: dataLink.id,
+      type: "authorization",
+      status: "success",
+      transaction_id: authorizePaymentId,
+      transaction_meta_data: {
+        code: "",
+        status: authorizePaymentRes.data.status,
+        statusCode: 201,
+        reason: "",
+        message: "",
+      },
+    });
+
     console.log("AUTHORIZE PAYMENT RESPONSE", authorizePaymentRes.data);
   } catch (error) {
     let code = "";
     let statusRequest = 400;
+    let statusCyber = "";
+    let reason = "";
+    let message = "";
+
     console.log("AUTHORIZE PAYMENT ERROR", error);
 
     if (axios.isAxiosError(error)) {
@@ -189,15 +222,34 @@ export async function POST(req: Request) {
 
         code = CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR;
         statusRequest = error.status;
+        statusCyber = errorData.status;
+        reason = errorData.reason;
+        message = errorData.message;
       }
 
       if (error.status && error.status >= 500) {
         const errorData = error.response?.data as PaymentError500;
-
         code = CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR;
         statusRequest = error.status;
+        statusCyber = errorData.status;
+        reason = errorData.reason;
+        message = errorData.message;
       }
     }
+
+    await registerTransaction({
+      link_id: dataLink.id,
+      type: "authorization",
+      status: "error",
+      transaction_id: authorizePaymentId,
+      transaction_meta_data: {
+        code: code,
+        statusCode: statusRequest,
+        status: statusCyber,
+        reason: reason,
+        message: message,
+      },
+    });
 
     return NextResponse.json(
       {
@@ -219,6 +271,9 @@ export async function POST(req: Request) {
     date,
     method: "post",
   });
+
+  let capturePaymentId = "";
+
   try {
     const capturePaymentRes = await axios.post<CapturePaymentResponse>(
       `https://${merchantConfig.runEnvironment}${ENDPOINT_CAPTURE_PAYMENT_WITH_ID(
@@ -240,12 +295,31 @@ export async function POST(req: Request) {
 
     console.log("CAPTURE PAYMENT RESPONSE", capturePaymentRes.data);
 
+    capturePaymentId = capturePaymentRes.data.reconciliationId;
+
+    await registerTransaction({
+      link_id: dataLink.id,
+      type: "capture",
+      status: "success",
+      transaction_id: capturePaymentId,
+      transaction_meta_data: {
+        status: capturePaymentRes.data.status,
+        reason: "",
+        message: "",
+        code: "",
+        statusCode: 201,
+      },
+    });
+
     return NextResponse.json({
       code: CODE_STATUS_LOCAL_PAYMENT.PAYMENT_SUCCESS,
     });
   } catch (error) {
     let code = "";
     let statusRequest = 400;
+    let statusCyber = "";
+    let reason = "";
+    let message = "";
 
     if (axios.isAxiosError(error)) {
       console.log("CAPTURE PAYMENT ERROR", error);
@@ -253,14 +327,34 @@ export async function POST(req: Request) {
         const errorData = error.response?.data as CapturePaymentError400;
         code = CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR;
         statusRequest = error.status;
+        statusCyber = errorData.status;
+        reason = errorData.reason;
+        message = errorData.message;
       }
 
       if (error.status && error.status >= 500) {
         const errorData = error.response?.data as PaymentError500;
         code = CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR;
         statusRequest = error.status;
+        statusCyber = errorData.status;
+        reason = errorData.reason;
+        message = errorData.message;
       }
     }
+
+    await registerTransaction({
+      link_id: dataLink.id,
+      type: "capture",
+      status: "error",
+      transaction_id: capturePaymentId,
+      transaction_meta_data: {
+        status: statusCyber,
+        reason: reason,
+        message: message,
+        code: code,
+        statusCode: statusRequest,
+      },
+    });
 
     return NextResponse.json(
       {

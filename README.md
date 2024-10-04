@@ -17,3 +17,9 @@
 - [ ] Payment checkout Medusa and Cybersource
 - [ ] Detect when user leaves the page
 - [ ] Add inspiration of eleven [dub.co, v1, midday, stripe]
+
+
+## REFERENCES
+
+https://clearcut.lemonsqueezy.com/checkout
+https://stripe.com/en-es/payments/payment-links

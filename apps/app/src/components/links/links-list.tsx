@@ -31,6 +31,7 @@ const LinksList = () => {
             }}
             views={link.views ?? 0}
             created_at={link.created_at}
+            state={link.state}
           />
         ))
       )}
