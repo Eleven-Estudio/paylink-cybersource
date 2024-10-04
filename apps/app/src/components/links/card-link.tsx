@@ -3,6 +3,7 @@ import { linkConstructor } from "@/lib/link-constructor";
 import type { Tables } from "@v1/supabase/types";
 import { CopyButton } from "@v1/ui/copy-button";
 import { Lucide } from "@v1/ui/lucide";
+import ActionsLink from "./actions-link";
 import DateTooltip from "./date-tooltip";
 import TagBadge, { type stateProps } from "./status-badge";
 import CreatedByTooltip from "./user-tooltip";
@@ -113,11 +114,17 @@ const CardLink = ({
           <TagBadge state={state as stateProps} />
           <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-800">
             {/* Views */}
-            <div className="hidden items-center sm:flex gap-1 whitespace-nowrap px-1.5 py-0.5 transition-colors hover:bg-gray-100">
+            <div className="items-center flex gap-1 whitespace-nowrap px-1.5 py-0.5 transition-colors hover:bg-gray-100">
               <Lucide.MousePointerClick className="w-4 h-4" />
-              <span className="text-sm font-medium">{views} views</span>
+              <span className="text-sm font-medium">
+                {views} <span className="hidden sm:inline">views</span>
+              </span>
             </div>
           </div>
+          <ActionsLink
+            className="border border-transparent group-hover/card:border-neutral-200 transition-[border] duration-200 ease-in-out"
+            id={id}
+          />
         </div>
       </div>
     </li>

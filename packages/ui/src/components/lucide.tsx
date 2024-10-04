@@ -6,6 +6,7 @@ import {
   CircleUser,
   Copy,
   CornerDownRight,
+  EllipsisVertical,
   Eye,
   EyeOff,
   Link,
@@ -38,4 +39,5 @@ export const Lucide = {
   JsonIcon: Braces,
   MousePointerClick,
   RefreshCcw,
+  EllipsisVertical,
 };
