@@ -79,6 +79,15 @@ export async function POST(req: Request) {
     );
   }
 
+  if (!dataLink.active) {
+    return NextResponse.json(
+      {
+        code: CODE_STATUS_LOCAL_PAYMENT.LINK_EXPIRED,
+      },
+      { status: 404 },
+    );
+  }
+
   const clientCodeId = nanoid();
   const [month, year] = ccExpiration.split("/");
   const fullYear =
