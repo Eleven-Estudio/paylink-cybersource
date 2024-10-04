@@ -40,9 +40,14 @@ const CardLink = ({
     key: link,
   });
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!id) return;
+    e.stopPropagation();
     if (onClick) onClick(id);
+  };
+
+  const handleClickLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.stopPropagation();
   };
 
   return (
@@ -83,6 +88,7 @@ const CardLink = ({
                   <Lucide.CornerDownRight className="w-3 h-3 shrink-0 text-gray-400" />
                   <a
                     href={url}
+                    onClick={handleClickLink}
                     className="truncate text-gray-500 transition-colors hover:text-gray-700 hover:underline hover:underline-offset-2"
                   >
                     {/* {url.replace(/^https?:\/\//, "")} */}

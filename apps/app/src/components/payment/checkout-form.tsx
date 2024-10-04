@@ -41,6 +41,13 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
       setStatusPayment("success");
     }
 
+    if (
+      result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.LINK_EXPIRED ||
+      result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.LINK_NOT_FOUND
+    ) {
+      throw Error(result?.data?.code);
+    }
+
     if (result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR) {
       setStatusPayment("error");
       setMessageError(
