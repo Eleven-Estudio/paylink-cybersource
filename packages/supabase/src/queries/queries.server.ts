@@ -7,9 +7,8 @@ export const getLinkPublic = async (key: string) => {
   try {
     const result = await supabase
       .from("links")
-      .select("title, description, amount, currency, id, key")
+      .select("title, description, amount, currency, id, key, active")
       .eq("key", key)
-      .eq("active", true)
       .single();
 
     return result.data;

@@ -49,6 +49,7 @@ const LinksList = () => {
                 id={link.id}
                 title={link.title}
                 link={link.key}
+                active={!!link?.active}
                 user={{
                   name: user.name ?? "",
                   email: user.email ?? "",

@@ -11,6 +11,7 @@ interface Props {
   id: number;
   title: string;
   link: string;
+  active: boolean;
   user: {
     name: string;
     email: string;
@@ -27,6 +28,7 @@ const CardLink = ({
   title,
   link,
   user,
+  active,
   views,
   created_at,
   state,
@@ -65,6 +67,11 @@ const CardLink = ({
                 <span className="truncate font-semibold leading-6 text-gray-800 transition-colors hover:text-black">
                   {title}
                 </span>
+                {active ? (
+                  <Lucide.Eye className="w-3 h-3" />
+                ) : (
+                  <Lucide.EyeOff className="w-3 h-3" />
+                )}
                 <CopyButton value={url} variant="neutral" />
               </div>
 

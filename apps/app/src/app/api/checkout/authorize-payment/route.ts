@@ -166,22 +166,28 @@ export async function POST(req: Request) {
       },
     );
 
-    authorizePaymentId = authorizePaymentRes.data.reconciliationId;
-
     if (authorizePaymentRes.data.errorInformation?.reason) {
       await registerTransaction({
         link_id: dataLink.id,
         type: "authorization",
-        status: "success",
+        status: "error",
         transaction_id: authorizePaymentId,
         transaction_meta_data: {
           code: CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR,
           statusCode: 201,
+          id: authorizePaymentRes.data.id,
           status: authorizePaymentRes.data.status,
           reason: authorizePaymentRes.data.errorInformation?.reason,
           message: authorizePaymentRes.data.errorInformation?.message,
         },
       });
+
+      authorizePaymentId = authorizePaymentRes.data.reconciliationId;
+
+      // console.log(
+      //   "AUTHORIZE PAYMENT RESPONSE SUCCESS FAILED",
+      //   authorizePaymentRes.data,
+      // );
 
       return NextResponse.json(
         {
@@ -206,7 +212,7 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("AUTHORIZE PAYMENT RESPONSE", authorizePaymentRes.data);
+    // console.log("AUTHORIZE PAYMENT RESPONSE", authorizePaymentRes.data);
   } catch (error) {
     let code = "";
     let statusRequest = 400;
@@ -214,7 +220,7 @@ export async function POST(req: Request) {
     let reason = "";
     let message = "";
 
-    console.log("AUTHORIZE PAYMENT ERROR", error);
+    // console.log("AUTHORIZE PAYMENT ERROR", error);
 
     if (axios.isAxiosError(error)) {
       if (error.status && error.status >= 400) {
@@ -293,7 +299,7 @@ export async function POST(req: Request) {
       },
     );
 
-    console.log("CAPTURE PAYMENT RESPONSE", capturePaymentRes.data);
+    // console.log("CAPTURE PAYMENT RESPONSE", capturePaymentRes.data);
 
     capturePaymentId = capturePaymentRes.data.reconciliationId;
 
@@ -322,7 +328,7 @@ export async function POST(req: Request) {
     let message = "";
 
     if (axios.isAxiosError(error)) {
-      console.log("CAPTURE PAYMENT ERROR", error);
+      // console.log("CAPTURE PAYMENT ERROR", error);
       if (error.status && error.status >= 400) {
         const errorData = error.response?.data as CapturePaymentError400;
         code = CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR;
