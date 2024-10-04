@@ -182,8 +182,6 @@ export async function POST(req: Request) {
         },
       });
 
-      authorizePaymentId = authorizePaymentRes.data.reconciliationId;
-
       // console.log(
       //   "AUTHORIZE PAYMENT RESPONSE SUCCESS FAILED",
       //   authorizePaymentRes.data,
@@ -197,6 +195,8 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
+
+    authorizePaymentId = authorizePaymentRes.data.reconciliationId;
 
     await registerTransaction({
       link_id: dataLink.id,
