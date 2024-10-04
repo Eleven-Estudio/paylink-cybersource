@@ -20,8 +20,8 @@ const page = async ({ params }: { params: { link: string } }) => {
   const data = await getLinkPublic(params.link);
   await registerView(params.link);
 
-  if (!data) throw Error(CODE_STATUS_LOCAL_PAYMENT.LINK_NOT_FOUND);
-  if (!data?.active) throw Error(CODE_STATUS_LOCAL_PAYMENT.LINK_EXPIRED);
+  if (!data) throw new Error(CODE_STATUS_LOCAL_PAYMENT.LINK_NOT_FOUND);
+  if (!data?.active) throw new Error(CODE_STATUS_LOCAL_PAYMENT.LINK_EXPIRED);
 
   return (
     <div className="max-w-[920px] w-full mx-auto z-10 checkout:pt-[65px] px-1 sm:px-4 transition-all duration-300 payment-container">

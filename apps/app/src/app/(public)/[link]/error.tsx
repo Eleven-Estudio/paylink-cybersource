@@ -12,7 +12,12 @@ const DESCRIPTION_BY_ERROR = {
     "The link you were looking for has expired. Please contact the merchant.",
 };
 
-const ErrorBoundary = ({ error }: { error: Error }) => {
+type ErrorProps = {
+  error: Error;
+  reset: () => void;
+};
+
+const ErrorBoundary = ({ error }: ErrorProps) => {
   const errorMessage = error.message as keyof typeof TITLES_BY_ERROR;
   return (
     <div className="flex items-center justify-center h-screen w-full bg-white z-30">
