@@ -119,7 +119,7 @@ const FormLink = ({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea rows={6} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
