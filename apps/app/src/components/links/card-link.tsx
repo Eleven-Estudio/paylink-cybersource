@@ -1,15 +1,14 @@
 import { BUSINESS } from "@/business";
 import { linkConstructor } from "@/lib/link-constructor";
 import type { Tables } from "@v1/supabase/types";
-import { Avatar, AvatarFallback, AvatarImage } from "@v1/ui/avatar";
 import { CopyButton } from "@v1/ui/copy-button";
 import { Lucide } from "@v1/ui/lucide";
-import React from "react";
 import DateTooltip from "./date-tooltip";
 import TagBadge, { type stateProps } from "./status-badge";
 import CreatedByTooltip from "./user-tooltip";
 
 interface Props {
+  id: number;
   title: string;
   link: string;
   user: {
@@ -20,17 +19,36 @@ interface Props {
   views: number;
   created_at: string;
   state: Tables<"links">["state"];
+  onClick: (id: number) => void;
 }
 
-const CardLink = ({ title, link, user, views, created_at, state }: Props) => {
+const CardLink = ({
+  id,
+  title,
+  link,
+  user,
+  views,
+  created_at,
+  state,
+  onClick,
+}: Props) => {
   const url = linkConstructor({
     domain: BUSINESS.domain,
     key: link,
   });
 
+  const handleClick = () => {
+    if (!id) return;
+    if (onClick) onClick(id);
+  };
+
   return (
     <li className="w-full group/card border-gray-200 bg-white border rounded-xl transition-[filter] hover:drop-shadow-card-hover">
-      <div className="w-full py-2.5 px-4 flex items-center gap-5 sm:gap-8 md:gap-12 text-sm">
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+      <div
+        className="w-full py-2.5 px-4 flex items-center gap-5 sm:gap-8 md:gap-12 text-sm"
+        onClick={handleClick}
+      >
         <div className="min-w-0 grow">
           <div className="flex items-center gap-3 h-[60px]">
             {/* Link Icon */}
@@ -89,11 +107,7 @@ const CardLink = ({ title, link, user, views, created_at, state }: Props) => {
           <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-800">
             {/* Views */}
             <div className="hidden items-center sm:flex gap-1 whitespace-nowrap px-1.5 py-0.5 transition-colors hover:bg-gray-100">
-              {views ? (
-                <Lucide.Eye className="w-3 h-3" />
-              ) : (
-                <Lucide.EyeOff className="w-3 h-3" />
-              )}
+              <Lucide.MousePointerClick className="w-4 h-4" />
               <span className="text-sm font-medium">{views} views</span>
             </div>
           </div>

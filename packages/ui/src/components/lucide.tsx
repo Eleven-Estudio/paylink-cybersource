@@ -1,4 +1,5 @@
 import {
+  Braces,
   Check,
   CheckCircle,
   CircleAlert,
@@ -13,6 +14,8 @@ import {
   LogOut,
   LogOutIcon,
   Menu,
+  MousePointerClick,
+  RefreshCcw,
   XCircle,
 } from "lucide-react";
 
@@ -32,4 +35,7 @@ export const Lucide = {
   LogOut: LogOutIcon,
   Link,
   CornerDownRight,
+  JsonIcon: Braces,
+  MousePointerClick,
+  RefreshCcw,
 };

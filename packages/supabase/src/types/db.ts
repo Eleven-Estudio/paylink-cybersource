@@ -22,6 +22,7 @@ export type Database = {
           state: Database["public"]["Enums"]["status"] | null
           title: string
           updated_at: string | null
+          updated_by: string | null
           views: number | null
         }
         Insert: {
@@ -36,6 +37,7 @@ export type Database = {
           state?: Database["public"]["Enums"]["status"] | null
           title: string
           updated_at?: string | null
+          updated_by?: string | null
           views?: number | null
         }
         Update: {
@@ -50,12 +52,20 @@ export type Database = {
           state?: Database["public"]["Enums"]["status"] | null
           title?: string
           updated_at?: string | null
+          updated_by?: string | null
           views?: number | null
         }
         Relationships: [
           {
             foreignKeyName: "links_created_by_fkey"
             columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "links_updated_by_fkey"
+            columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]

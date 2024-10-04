@@ -74,12 +74,14 @@ interface FormPaymentProps {
   defaultValues: Partial<z.infer<typeof checkoutSchema>>;
   onSubmit: (values: z.infer<typeof checkoutSchema>) => Promise<void>;
   status: "success" | "error" | null;
+  messageError?: string;
 }
 
 const FormPayment = ({
   defaultValues,
   onSubmit,
   status: statusPayment,
+  messageError = "",
 }: FormPaymentProps) => {
   const [ccNumber, setCcNumber] = useState("");
   const [ccExpiration, setCcExpiration] = useState("");
@@ -126,6 +128,15 @@ const FormPayment = ({
       };
     }
 
+    if (statusPayment === "error") {
+      return {
+        buttonText: "Try again",
+        buttonIcon: <Lucide.RefreshCcw className="h-4 w-4" />,
+        disabled: false,
+        buttonClassname: "",
+      };
+    }
+
     return {
       buttonText: "Pay",
       buttonIcon: "",
@@ -152,7 +163,6 @@ const FormPayment = ({
   }, [form.watch]);
 
   useEffect(() => {
-    console.log("statusPayment", statusPayment);
     if (statusPayment === "error") {
       setTimeout(() => {
         errorMessageRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -490,7 +500,9 @@ const FormPayment = ({
         </div>
 
         <AnimatePresence initial={false}>
-          {statusPayment === "error" && <ErrorMessage ref={errorMessageRef} />}
+          {messageError && (
+            <ErrorMessage ref={errorMessageRef} message={messageError} />
+          )}
         </AnimatePresence>
 
         <Button

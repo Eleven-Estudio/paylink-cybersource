@@ -15,6 +15,19 @@ export async function insertLink(data: TablesInsert<"links">) {
   }
 }
 
+export async function updateLink(linkId: number, data: TablesUpdate<"links">) {
+  const supabase = createClient();
+
+  try {
+    const result = await supabase.from("links").update(data).eq("id", linkId);
+
+    return result;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+}
+
 export async function registerView(key: string) {
   const supabase = createClient();
 
@@ -50,7 +63,6 @@ export async function registerTransaction(data: TablesInsert<"transactions">) {
 
   try {
     const result = await supabase.from("transactions").insert(data);
-    console.log("RESULT REGISTER TRANSACTION", result);
     return result;
   } catch (error) {
     logger.error(error);

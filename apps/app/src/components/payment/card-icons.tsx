@@ -1,6 +1,7 @@
 import { AVAILABLE_CARDS } from "@/lib/cybersource";
 import { cn } from "@v1/ui/utils";
 import type { CreditCardType } from "cleave-zen";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface CardIconsProps {
   type: CreditCardType | null;
@@ -19,7 +20,15 @@ const availableDynamicImages = dynamicImages
 
 function CardIcon({ name, className }: { name: string; className?: string }) {
   return (
-    <img src={`/cards/${name}.svg`} alt={name} className={cn(className)} />
+    <motion.img
+      src={`/cards/${name}.svg`}
+      alt={name}
+      className={cn(className)}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    />
   );
 }
 
@@ -57,18 +66,22 @@ function CardIcons({ type }: CardIconsProps) {
   if (allAvailableImages.length === 0) return null;
 
   return (
-    <div className="flex gap-1 justify-end absolute right-0 top-1/2 -translate-y-1/2 mr-2 pointer-events-none">
-      {shouldShowAllIcons && (
-        <>
-          {availableStaticImages.map((image) => (
-            <CardIcon key={image} name={image} />
-          ))}
-          <DynamicCardIcons />
-        </>
-      )}
+    <AnimatePresence>
+      <div className="flex gap-1 justify-end absolute right-0 top-1/2 -translate-y-1/2 mr-2 pointer-events-none">
+        {shouldShowAllIcons && (
+          <>
+            {availableStaticImages.map((image) => (
+              <CardIcon key={image} name={image} />
+            ))}
+            <DynamicCardIcons />
+          </>
+        )}
 
-      {type && availableStaticImages.includes(type) && <CardIcon name={type} />}
-    </div>
+        {type && availableStaticImages.includes(type) && (
+          <CardIcon name={type} />
+        )}
+      </div>
+    </AnimatePresence>
   );
 }
 

@@ -26,13 +26,10 @@ export const CheckoutFormSkeleton = () => {
 const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
   const params = useParams();
 
-  const [statusPayment, setStatusPayment] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({
-    type: null,
-    message: "",
-  });
+  const [statusPayment, setStatusPayment] = useState<
+    "success" | "error" | null
+  >(null);
+  const [messageError, setMessageError] = useState<string>("");
 
   async function onSubmit(values: z.infer<typeof checkoutSchema>) {
     const result = await generatePaymentAction({
@@ -41,33 +38,30 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
     });
 
     if (result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.PAYMENT_SUCCESS) {
-      setStatusPayment({
-        type: "success",
-        message: "Payment successful",
-      });
+      setStatusPayment("success");
     }
 
     if (result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR) {
-      setStatusPayment({
-        type: "error",
-        message: "Payment error",
-      });
+      setStatusPayment("error");
+      setMessageError(
+        result?.data?.message ??
+          "There was an error processing your payment. Please try again later or with a different payment method.",
+      );
     }
   }
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setStatusPayment({
-  //       type: "success",
-  //       message: "",
-  //     });
-  //   }, 1000);
-  // }, []);
+  useEffect(() => {
+    if (statusPayment === "error") {
+      setTimeout(() => {
+        setStatusPayment(null);
+      }, 3000);
+    }
+  }, [statusPayment]);
 
   return (
     <>
       <AnimatePresence initial={false}>
-        {statusPayment.type !== "success" && (
+        {statusPayment !== "success" && (
           <motion.div
             key={"checkout-form"}
             initial={{ opacity: 1, display: "flex" }}
@@ -80,8 +74,9 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
               Payment with card
             </TypographyH4>
             <FormPayment
-              status={statusPayment.type}
+              status={statusPayment}
               onSubmit={onSubmit}
+              messageError={messageError}
               defaultValues={{ country: defaultCountry }}
             />
             <Powered className="fade-in" />
@@ -89,7 +84,7 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
         )}
       </AnimatePresence>
       <AnimatePresence initial={false}>
-        {statusPayment.type === "success" && <SuccessMessage />}
+        {statusPayment === "success" && <SuccessMessage />}
       </AnimatePresence>
     </>
   );

@@ -16,7 +16,7 @@ export default function Page() {
               Links
             </h1>
             <div className="grow-0 order-2">
-              <DialogFormLink action="create" />
+              <DialogFormLink />
             </div>
           </div>
         </MaxWidthWrapper>
