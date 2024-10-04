@@ -103,7 +103,7 @@ const ModalViewUpdateLink = () => {
               {isLoading ? <Skeleton className="w-20 h-4" /> : data?.title}
             </div>
           </DialogTitle>
-          <div className="grid w-full gap-y-6 max-md:overflow-auto md:grid-cols-[2fr_1.5fr] max-md:max-h-[calc(100dvh-200px)] max-md:min-h-[min(510px,_calc(100dvh-200px))] md:[&>div]:max-h-[calc(100dvh-200px)] md:[&>div]:min-h-[min(510px,_calc(100dvh-200px))] py-4">
+          <div className="grid w-full gap-y-6 max-md:overflow-auto md:grid-cols-[2fr_1.5fr] max-md:max-h-[calc(100dvh-200px)] max-md:min-h-[min(510px,_calc(100dvh-200px))] md:[&>div]:max-h-[calc(100dvh-200px)] md:[&>div]:min-h-[min(510px,_calc(100dvh-200px))] py-4 overflow-y-auto">
             <div className="pr-6">
               {isLoading ? (
                 <FormLinkSkeleton action="edit" />
