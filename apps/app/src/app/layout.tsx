@@ -9,6 +9,10 @@ export const metadata: Metadata = {
     template: "%s - Eleven Checkout",
     default: "Eleven Checkout",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({
