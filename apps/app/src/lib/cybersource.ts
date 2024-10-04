@@ -7,8 +7,10 @@ import crypto from "crypto";
 
 // common parameters
 const AuthenticationType = "http_signature";
-const RunEnvironment = "apitest.cybersource.com"; // TODO: make this configurable
-// const RunEnvironment = "api.cybersource.com"; // TODO: make this configurable
+const RunEnvironment =
+  process.env.CYBERSORUCE_RUN_ENVIRONMENT === "production"
+    ? "api.cybersource.com"
+    : "apitest.cybersource.com";
 const MerchantId = process.env.CYBERSORUCE_MERCHANT_ID;
 const availableCards =
   process.env.NEXT_PUBLIC_CYBERSOURCE_CARDS_AVAILABLE?.split(",") || "ALL";

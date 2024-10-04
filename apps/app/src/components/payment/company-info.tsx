@@ -15,6 +15,22 @@ interface Props {
   };
 }
 
+const BadgeMode = ({ className }: { className?: string }) => {
+  if (process.env.CYBERSORUCE_RUN_ENVIRONMENT !== "development") return null;
+  return (
+    <span
+      className={cn(
+        "my-auto block whitespace-nowrap rounded-md border px-2 py-0.5 text-xs",
+        "flex items-center gap-x-1.5 p-1.5 sm:rounded-lg sm:px-2 sm:py-0.5",
+        "border-orange-300 bg-orange-100 text-orange-600",
+        className,
+      )}
+    >
+      TEST MODE
+    </span>
+  );
+};
+
 export const CompanyInfoSkeleton = () => {
   return (
     <div className="bg-white checkout:bg-transparent p-4 checkout:p-0 fixed top-0 left-0 z-40 w-full checkout:static checkout-header">
@@ -49,6 +65,7 @@ const CompanyInfo = ({ className, name, logo }: Props) => {
         <span className="text-sm font-semibold line-clamp-1 text-neutral-700 ">
           {name}
         </span>
+        <BadgeMode />
       </div>
     </div>
   );
