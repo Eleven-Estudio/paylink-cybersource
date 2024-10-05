@@ -15,6 +15,7 @@ import type {
   CapturePaymentResponse,
 } from "@/types/cybersource/payment.capture";
 import type { PaymentError500 } from "@/types/cybersource/payment.general";
+import * as Sentry from "@sentry/nextjs";
 import { registerTransaction } from "@v1/supabase/mutations";
 import { getLinkPublic } from "@v1/supabase/server-queries";
 import axios from "axios";
@@ -71,22 +72,41 @@ export async function POST(req: Request) {
   const dataLink = await getLinkPublic(link);
 
   if (!dataLink) {
+    Sentry.captureException({
+      code: CODE_STATUS_LOCAL_PAYMENT.LINK_NOT_FOUND,
+      path: "/checkout/authorize-payment",
+    });
+
     return NextResponse.json(
       {
         code: CODE_STATUS_LOCAL_PAYMENT.LINK_NOT_FOUND,
+        success: false,
       },
-      { status: 404 },
+      { status: 403 },
     );
   }
 
   if (!dataLink.active) {
+    Sentry.captureException({
+      code: CODE_STATUS_LOCAL_PAYMENT.LINK_EXPIRED,
+      path: "/checkout/authorize-payment",
+    });
+
     return NextResponse.json(
       {
         code: CODE_STATUS_LOCAL_PAYMENT.LINK_EXPIRED,
+        success: false,
       },
-      { status: 404 },
+      { status: 403 },
     );
   }
+
+  Sentry.setContext("user", {
+    link_id: dataLink.id,
+    name,
+    email,
+    country,
+  });
 
   const clientCodeId = nanoid();
   const [month, year] = ccExpiration.split("/");
@@ -191,15 +211,13 @@ export async function POST(req: Request) {
         },
       });
 
-      // console.log(
-      //   "AUTHORIZE PAYMENT RESPONSE SUCCESS FAILED",
-      //   authorizePaymentRes.data,
-      // );
+      Sentry.captureException(authorizePaymentRes.data);
 
       return NextResponse.json(
         {
           code: CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR,
           data: authorizePaymentRes.data,
+          success: false,
         },
         { status: 400 },
       );
@@ -220,16 +238,12 @@ export async function POST(req: Request) {
         message: "",
       },
     });
-
-    // console.log("AUTHORIZE PAYMENT RESPONSE", authorizePaymentRes.data);
   } catch (error) {
     let code = "";
     let statusRequest = 400;
     let statusCyber = "";
     let reason = "";
     let message = "";
-
-    // console.log("AUTHORIZE PAYMENT ERROR", error);
 
     if (axios.isAxiosError(error)) {
       if (error.status && error.status >= 400) {
@@ -266,9 +280,12 @@ export async function POST(req: Request) {
       },
     });
 
+    Sentry.captureException(error);
+
     return NextResponse.json(
       {
         code,
+        success: false,
       },
       { status: statusRequest },
     );
@@ -308,8 +325,6 @@ export async function POST(req: Request) {
       },
     );
 
-    // console.log("CAPTURE PAYMENT RESPONSE", capturePaymentRes.data);
-
     capturePaymentId = capturePaymentRes.data.reconciliationId;
 
     await registerTransaction({
@@ -328,6 +343,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       code: CODE_STATUS_LOCAL_PAYMENT.PAYMENT_SUCCESS,
+      success: true,
     });
   } catch (error) {
     let code = "";
@@ -337,7 +353,6 @@ export async function POST(req: Request) {
     let message = "";
 
     if (axios.isAxiosError(error)) {
-      // console.log("CAPTURE PAYMENT ERROR", error);
       if (error.status && error.status >= 400) {
         const errorData = error.response?.data as CapturePaymentError400;
         code = CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR;
@@ -371,9 +386,12 @@ export async function POST(req: Request) {
       },
     });
 
+    Sentry.captureException(error);
+
     return NextResponse.json(
       {
         code,
+        success: false,
       },
       { status: statusRequest },
     );

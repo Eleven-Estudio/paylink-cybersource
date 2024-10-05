@@ -3,6 +3,7 @@
 import { generatePaymentAction } from "@/actions/checkout/generate-payment-action";
 import type { checkoutSchema } from "@/actions/checkout/schema";
 import { CODE_STATUS_LOCAL_PAYMENT } from "@/lib/errors";
+import * as Sentry from "@sentry/nextjs";
 import { Skeleton } from "@v1/ui/skeleton";
 import { TypographyH4 } from "@v1/ui/typography";
 import { AnimatePresence, motion } from "framer-motion";
@@ -37,33 +38,46 @@ const CheckoutForm = ({ defaultCountry }: { defaultCountry: string }) => {
       link: (params?.link ?? "") as string,
     });
 
+    if (result?.validationErrors) {
+      Sentry.captureException(result.validationErrors);
+      setStatusPayment("error");
+      setMessageError("There was an error processing your payment.");
+      return;
+    }
+
+    if (result?.data?.success === false) {
+      if (
+        result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.LINK_EXPIRED ||
+        result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.LINK_NOT_FOUND
+      ) {
+        window.location.reload();
+        return;
+      }
+
+      if (result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR) {
+        setStatusPayment("error");
+        setMessageError(
+          result?.data?.message ??
+            "There was an error processing your payment. Please try again later or with a different payment method.",
+        );
+        return;
+      }
+
+      // Sentry.captureException({
+      //   success: false,
+      //   error: result?.data,
+      // });
+
+      setStatusPayment("error");
+      setMessageError("There was an error processing your payment.");
+
+      return;
+    }
+
     if (result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.PAYMENT_SUCCESS) {
       setStatusPayment("success");
     }
-
-    if (
-      result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.LINK_EXPIRED ||
-      result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.LINK_NOT_FOUND
-    ) {
-      throw new Error(result?.data?.code);
-    }
-
-    if (result?.data?.code === CODE_STATUS_LOCAL_PAYMENT.PAYMENT_ERROR) {
-      setStatusPayment("error");
-      setMessageError(
-        result?.data?.message ??
-          "There was an error processing your payment. Please try again later or with a different payment method.",
-      );
-    }
   }
-
-  useEffect(() => {
-    if (statusPayment === "error") {
-      setTimeout(() => {
-        setStatusPayment(null);
-      }, 3000);
-    }
-  }, [statusPayment]);
 
   return (
     <>

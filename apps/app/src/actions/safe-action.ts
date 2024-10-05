@@ -17,6 +17,8 @@ const handleServerError = (e: Error) => {
     return e.message;
   }
 
+  Sentry.captureException(e);
+
   return DEFAULT_SERVER_ERROR_MESSAGE;
 };
 

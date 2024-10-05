@@ -1,13 +1,18 @@
 "use server";
 
 import { actionClientWithMeta } from "@/actions/safe-action";
+import * as Sentry from "@sentry/nextjs";
 import axios from "axios";
 import { checkoutSchema } from "./schema";
 
 export const generatePaymentAction = actionClientWithMeta
   .schema(checkoutSchema)
   .metadata({
-    name: "capture-payment",
+    name: "generate-payment",
+    track: {
+      event: "generate-payment",
+      channel: "checkout",
+    },
   })
   .action(async ({ parsedInput: input }) => {
     const {
@@ -48,9 +53,16 @@ export const generatePaymentAction = actionClientWithMeta
       return res.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return error.response?.data;
+        Sentry.captureException(error);
+        return {
+          ...error.response?.data,
+          success: false,
+        };
       }
 
-      return error;
+      Sentry.captureException(error);
+      return {
+        success: false,
+      };
     }
   });
