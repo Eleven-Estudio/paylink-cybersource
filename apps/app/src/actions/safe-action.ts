@@ -58,12 +58,24 @@ export const authActionClient = actionClientWithMeta
   .use(async ({ next, metadata }) => {
     const ip = headers().get("x-forwarded-for");
 
-    const { success, remaining } = await ratelimit.limit(
-      `${ip}-${metadata.name}`,
-    );
+    let remaining = Number.POSITIVE_INFINITY;
 
-    if (!success) {
-      throw new Error("Too many requests");
+    try {
+      const result = await ratelimit.limit(`${ip}-${metadata.name}`);
+
+      if (!result.success) {
+        throw new Error("Too many requests");
+      }
+
+      remaining = result.remaining;
+    } catch (error) {
+      if (error instanceof Error && error.message === "Too many requests") {
+        throw error;
+      }
+
+      // If the rate limiter itself fails (e.g. Upstash unreachable), don't take
+      // down the action — allow the request through instead of crashing.
+      logger.error(error);
     }
 
     return next({
